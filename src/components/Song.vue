@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-10 flex justify-center flex-col items-center">
+  <div class="song-container flex justify-center flex-col items-center">
     <div class="song-img relative z-0">
       <img
         class="song-img rounded-full h-64 w-64 z-10"
@@ -21,6 +21,9 @@ export default {
 </script>
 
 <style scoped>
+.song-container {
+  min-height: 60vh;
+}
 .song-img::before {
   content: "";
   position: absolute;
@@ -30,22 +33,32 @@ export default {
   width: 110%;
   background-color: #fefefe;
   border-radius: 9999px;
-  animation: colorAnimation 25s infinite;
+  background: linear-gradient(
+    -45deg,
+    #f9fafb,
+    #3730a3,
+    #92400e,
+    #047857,
+    #5b21b6,
+    #3b82f6
+  );
+  background-size: 400% 400%;
+  animation: colorAnimation 15s infinite;
   z-index: -1;
   backdrop-filter: blur(4px);
 }
 @keyframes colorAnimation {
   0% {
-    background-color: #f9fafb;
+    background-position: 0% 50%;
+    transform: rotate(0deg);
   }
-  45% {
-    background-color: #047857;
-  }
-  75% {
-    background-color: #4338ca;
+  50% {
+    background-position: 100% 50%;
+    transform: rotate(180deg);
   }
   100% {
-    background-color: #f9fafb;
+    background-position: 0% 50%;
+    transform: rotate(360deg);
   }
 }
 </style>

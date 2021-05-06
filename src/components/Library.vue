@@ -1,5 +1,6 @@
 <template>
   <div
+    :class="{ 'active-library': isLibraryOpen }"
     class="library fixed top-0 left-0 w-80 h-full bg-gray-900 shadow-md overflow-y-scroll"
   >
     <h2 class="p-8 text-2xl">Library</h2>
@@ -15,6 +16,7 @@ export default {
   name: "Library",
   props: {
     songs: Array,
+    isLibraryOpen: Boolean,
   },
   components: {
     LibrarySong,
