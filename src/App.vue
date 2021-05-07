@@ -9,10 +9,14 @@
       <Player
         :songInfo="songInfo"
         :isPlaying="isPlaying"
-        @playSong="playSong1"
+        @playSong="playSong"
       />
       <Library :isLibraryOpen="isLibraryOpen" :songs="songs" />
-      <audio :src="currentSong.audio"></audio>
+      <audio
+        ref="audio"
+        @timeupdate="timeUpdate"
+        :src="currentSong.audio"
+      ></audio>
     </div>
   </div>
 </template>
@@ -37,7 +41,7 @@ export default {
       songInfo: {
         currentTime: 0,
         duration: 0,
-        animationPercentage: 20,
+        animationPercentage: 0,
       },
     };
   },
@@ -45,30 +49,33 @@ export default {
     this.songs = data();
     this.currentSong = this.songs[0];
   },
-  mounted() {
-    // console.log(this.currentSong);
-    // this.currentSong.audio.play();
-  },
   methods: {
     toggleLibrary() {
       this.isLibraryOpen = !this.isLibraryOpen;
     },
-    playSong1() {
-      console.log(this.currentSong);
-      // if (this.isPlaying) {
-      //   this.currentSong.play();
-      // }
+    playSong() {
+      if (this.isPlaying) {
+        this.$refs.audio.pause();
+        this.isPlaying = false;
+      } else {
+        this.$refs.audio.play();
+        this.isPlaying = true;
+      }
     },
-    // timeUpdate(e) {
-    //   const current = e.target.currentTime;
-    //   const duration = e.target.duration;
-    //   // Calculate percentage
-    //   const roundedCurrent = Math.round(current);
-    //   const roundedDuration = Math.round(duration);
-    //   const animation = Math.round((roundedCurrent / roundedDuration) * 100);
+    timeUpdate(e) {
+      const current = e.target.currentTime;
+      const duration = e.target.duration;
+      // Calculate percentage
+      const roundedCurrent = Math.round(current);
+      const roundedDuration = Math.round(duration);
+      const animation = Math.round((roundedCurrent / roundedDuration) * 100);
 
-    //   this.songInfo = { roundedCurrent, roundedDuration, animation };
-    // },
+      this.songInfo = {
+        currentTime: roundedCurrent,
+        duration: roundedDuration,
+        animationPercentage: animation,
+      };
+    },
   },
   components: {
     Nav,

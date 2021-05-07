@@ -1,7 +1,7 @@
 <template>
   <div class="player flex flex-col justify-center items-center mt-2">
     <div class="sm-block flex items-center mt-4 mb-8">
-      <span class="mx-2 p-2">00:00</span>
+      <span class="mx-2 p-2">{{ getTime(songInfo.currentTime) }}</span>
       <div class="track w-full overflow-hidden h-4 relative rounded-2xl">
         <input
           class="w-full appearance-none bg-transparent cursor-pointer"
@@ -15,7 +15,9 @@
           class="animate-track bg-indigo-200 w-full h-full absolute top-0 left-0"
         ></div>
       </div>
-      <span class="mx-2 p-2">2:36</span>
+      <span class="mx-2 p-2">{{
+        songInfo.duration ? getTime(songInfo.duration) : "0:00"
+      }}</span>
     </div>
     <div class="flex items-center">
       <font-awesome-icon
@@ -25,14 +27,15 @@
       />
       <font-awesome-icon
         v-if="!isPlaying"
-        @click="$emit(playSong)"
+        @click="$emit('playSong')"
         class="ml-12 mr-10 cursor-pointer"
         :icon="['fas', 'play']"
         size="3x"
       />
       <font-awesome-icon
+        @click="$emit('playSong')"
         v-else
-        class="mx-8"
+        class="mx-10 cursor-pointer"
         :icon="['fas', 'pause']"
         size="3x"
       />
@@ -48,21 +51,21 @@
 <script>
 export default {
   name: "Player",
-  computed: {
-    styleObject() {
-      return `transform: translateX(${this.songInfo.animationPercentage}%)`;
-    },
-  },
   props: {
     isPlaying: Boolean,
     songInfo: Object,
   },
   methods: {
-    // if (isPlaying) {
-    // }
+    getTime(time) {
+      return (
+        Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60)).slice(-2)
+      );
+    },
   },
-  mounted() {
-    console.log(this.songInfo.animationPercentage);
+  computed: {
+    styleObject() {
+      return `transform: translateX(${this.songInfo.animationPercentage}%)`;
+    },
   },
 };
 </script>
